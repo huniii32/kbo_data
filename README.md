@@ -8,6 +8,6 @@
 
 ## Slack Chatbot을 이용하여 메세지 보내기🖥
 1. Slack Chatbot App 생성
-2. Python 코드 구현
+2. Python 코드 구현 - 토큰 가져오기
 3. CSV File 읽고 내용 가져오기
 4. '순위' 입력시 Chatbot 해당 내용 메세지 보내기 실행
