@@ -28,13 +28,13 @@ time.sleep(1)
 
 select_element_year = browser.find_element(By.CLASS_NAME, 'ui-datepicker-year') # 데이트피커 연도 선택
 select = Select(select_element_year)
-select.select_by_value("2024") # 연도 그대로 입력
+select.select_by_value("2010") # 연도 그대로 입력
 
-select_element_month = browser.find_element(By.CLASS_NAME, "ui-datepicker-month") #데이트피커 월 선택
+select_element_month = browser.find_element(By.CLASS_NAME, "ui-datepicker-month") # 데이트피커 월 선택
 select = Select(select_element_month)
-select.select_by_value("2") # 월-1 입력
+select.select_by_value("2") # 월-1 입력 ex) 4월 - "3"
 
-browser.find_element(By.XPATH, "//*[@id=\"ui-datepicker-div\"]/table/tbody/tr[4]/td[7]/a").click() # 3월23일 클릭(개막일)
+browser.find_element(By.XPATH, "//*[@id=\"ui-datepicker-div\"]/table/tbody/tr[4]/td[7]/a").click() # 3월23일 클릭(개막일(2010년))
 time.sleep(2)
 
 head_list = []
@@ -68,7 +68,6 @@ def kbo_data_crawling():
     
     # 데이터프레임 생성
     df = pd.DataFrame([body_list[i:i+9] for i in range(0, len(body_list), 9)], columns=head_list)
-    
     return df
 
 # CSV 파일에 데이터 쓰기 위한 헤더 작성
