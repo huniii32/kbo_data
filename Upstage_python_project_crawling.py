@@ -3,16 +3,13 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.select import Select
 
 import time
 
+import os
+
 import pandas as pd
-
-# KBO DATA CRAWLING
-# 매일 kbo 팀별 데이터 수집
-# 매일 상위 3개팀 및 수집한 정보 슬랙봇? 카카오톡으로 보내주기
-
-# 추후 13~23년도까지의 데이터 크롤링 후, 진출 가능성 매일 업데이트
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_experimental_option("detach", True)
@@ -27,9 +24,17 @@ print(today)
 
 # 시즌 개막 페이지 이동
 browser.find_element(By.CLASS_NAME, "ui-datepicker-trigger").click() # 데이트피커 클릭
-time.sleep(1)
-browser.find_element(By.XPATH, "//*[@id=\"ui-datepicker-div\"]/div/a[1]").click() # 이전달 클릭
-browser.find_element(By.XPATH, "//*[@id=\"ui-datepicker-div\"]/table/tbody/tr[4]/td[7]/a").click() # 3월23일 클릭
+time.sleep(1) 
+
+select_element_year = browser.find_element(By.CLASS_NAME, 'ui-datepicker-year') # 데이트피커 연도 선택
+select = Select(select_element_year)
+select.select_by_value("2024") # 연도 그대로 입력
+
+select_element_month = browser.find_element(By.CLASS_NAME, "ui-datepicker-month") #데이트피커 월 선택
+select = Select(select_element_month)
+select.select_by_value("2") # 월-1 입력
+
+browser.find_element(By.XPATH, "//*[@id=\"ui-datepicker-div\"]/table/tbody/tr[4]/td[7]/a").click() # 3월23일 클릭(개막일)
 time.sleep(2)
 
 head_list = []
@@ -80,9 +85,8 @@ while(True):
     print(kbo_data)
     
     # CSV 파일에 데이터 추가
-    if not header_written:
-        kbo_data.to_csv("kbo_data.csv", mode='a', encoding='utf-8-sig', index=False)
-        header_written = True
+    if not os.path.exists("kbo_data.csv"):
+        kbo_data.to_csv("kbo_data.csv", encoding='utf-8-sig', index=False)
     else:
         kbo_data.to_csv("kbo_data.csv", mode='a', header=False, encoding='utf-8-sig', index=False)
     
