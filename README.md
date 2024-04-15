@@ -17,7 +17,3 @@
 1. CSV load
 2. 오늘의 야구 순위 시각화(표)
 3. 구단(선택)별 승률 시각화 + 추후(연도, 월 단위별 그래프 시각화)
-
-> @st.cache_data()  
-> def load_data():  
->    return pd.read_csv('kbo_data.csv')  
